@@ -1,16 +1,13 @@
-name: "Labeler"
-description: "Automatically label new pull requests based on the paths of files being changed"
+name: "triagecat"
+description: "GitHub action to automate managing repositories with labels, milestones and projects."
 author: "GitHub"
 inputs:
-  repo-token:
-    description: "The GITHUB_TOKEN secret"
-  configuration-path:
-    description: "The path for the label configurations"
-    default: ".github/labeler.yml"
+  token:
+    description: "A github PAT with org:write for project board management"
     required: false
-  sync-labels:
-    description: "Whether or not to remove labels when matching files are reverted"
-    default: false
+  config-path:
+    description: "The path to the configuration .yml file"
+    default: ".github/triagecat.yml"
     required: false
 
 runs:

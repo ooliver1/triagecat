@@ -42,7 +42,7 @@ export default async function run() {
 }
 
 async function getConfig() {
-  const configFile = getInput("config") || ".github/triagecat.yml";
+  const configFile = getInput("config");
   const file = await readFile(configFile, "utf8");
   const config: ConfigFile = load(file) as any;
   ConfigFile.check(config);
