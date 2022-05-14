@@ -32,7 +32,8 @@ jobs:
     steps:
       - uses: ooliver1/triagecat@master  # lock to version
         with:
-          TOKEN: ${{ secrets.PAT }}
+          org-token: ${{ secrets.PAT }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## Contributing
