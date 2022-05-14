@@ -42,7 +42,9 @@ export default async function run() {
 
 async function getConfig(token: string) {
   const configFile = getInput("config") || ".github/triagecat.yml";
-  const config: ConfigFile = load(await fetchContent(getOctokit(token), configFile));
+  const config: ConfigFile = load(
+    await fetchContent(getOctokit(token), configFile)
+  ) as any;
   ConfigFile.check(config);
   return config;
 }
