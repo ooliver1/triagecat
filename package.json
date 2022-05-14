@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description":
   "GitHub action to automate managing repositories with labels, milestones and projects.",
-  "main": "lib/main.js",
+  "main": "lib/index.js",
   "scripts": {
-    "build": "ts-interface-builder types/config.d.ts && tsc && ncc build lib/main.js",
+    "build": "ts-interface-builder types/config.d.ts && tsc && ncc build lib/index.js",
     "format": "prettier --write \"**/*.ts\"",
     "format-check": "prettier --check \"**/*.ts\"",
     "test": "echo \"no test\" && exit 0"
