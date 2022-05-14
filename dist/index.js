@@ -36,6 +36,7 @@ function pullRequestHandler(config) {
         console.log("pullRequestHandler");
         const payload = github_1.context.payload;
         const pr = payload.pull_request;
+        console.log(payload);
         if (payload.action in ["opened", "converted_to_draft"] && pr.draft == false) {
             yield draftHandler(config);
         }
