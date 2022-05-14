@@ -152,7 +152,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const promises_1 = __nccwpck_require__(3292);
 const github_1 = __nccwpck_require__(5433);
 const core_1 = __nccwpck_require__(1033);
 const js_yaml_1 = __nccwpck_require__(1236);
@@ -162,7 +161,7 @@ const handlers_1 = __nccwpck_require__(7773);
 const { ConfigFile } = (0, ts_interface_checker_1.createCheckers)(config_d_ti_1.default);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const config = yield getConfig();
+        const config = yield getConfig((0, core_1.getInput)("repo-token"));
         switch (github_1.context.eventName) {
             case "pull_request":
                 yield (0, handlers_1.pullRequestHandler)(config);
@@ -182,13 +181,23 @@ function run() {
     });
 }
 exports["default"] = run;
-function getConfig() {
+function getConfig(token) {
     return __awaiter(this, void 0, void 0, function* () {
         const configFile = (0, core_1.getInput)("config") || ".github/triagecat.yml";
-        const file = yield (0, promises_1.readFile)(configFile, "utf8");
-        const config = (0, js_yaml_1.load)(file);
+        const config = (0, js_yaml_1.load)(yield fetchContent((0, github_1.getOctokit)(token), configFile));
         ConfigFile.check(config);
         return config;
+    });
+}
+function fetchContent(client, repoPath) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield client.rest.repos.getContent({
+            owner: github_1.context.repo.owner,
+            repo: github_1.context.repo.repo,
+            path: repoPath,
+            ref: github_1.context.sha,
+        });
+        return Buffer.from(response.data.content, response.data.encoding).toString();
     });
 }
 //# sourceMappingURL=main.js.map
@@ -14275,14 +14284,6 @@ module.exports = require("events");
 
 "use strict";
 module.exports = require("fs");
-
-/***/ }),
-
-/***/ 3292:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("fs/promises");
 
 /***/ }),
 
