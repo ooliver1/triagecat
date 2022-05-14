@@ -1,18 +1,9 @@
 on: [push, pull_request]
 
-name: Build and test
+name: Build push and test
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: EndBug/add-and-commit@v9
-        with:
-          message: "chore: build project"
-  test:
-    name: Test
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -46,6 +37,14 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Push build to GitHub
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "chore: build project"
 
       - name: Test project
         run: pnpm run test
