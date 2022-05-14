@@ -33,3 +33,5 @@ async function draftHandler(config: ConfigFile) {
     }
   }
 }
+
+async function readyForReviewHandler(_: ConfigFile) {}
