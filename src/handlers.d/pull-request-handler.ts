@@ -8,6 +8,7 @@ export default async function pullRequestHandler(config: ConfigFile) {
   console.log("pullRequestHandler");
   const payload = context.payload as PullRequestEvent;
   const pr = payload.pull_request;
+  console.log(payload);
 
   if (payload.action in ["opened", "converted_to_draft"] && pr.draft == false) {
     await draftHandler(config);
