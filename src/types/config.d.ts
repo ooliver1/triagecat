@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 declare interface ConfigFile {
-  actions?: {
-    username: string;
-    email?: string;
-  };
   prs?: {
     drafts?: {
       markInProgress?: boolean;

@@ -3,20 +3,25 @@
   "version": "1.0.0",
   "description": "GitHub action to automate managing repositories with labels, milestones and projects.",
   "main": "lib/index.js",
+  "type": "module",
   "scripts": {
     "build": "ts-interface-builder src/types/config.d.ts && tsc && ncc build lib/index.js",
     "format": "prettier --write \"**/*.ts\"",
     "format-check": "prettier --check \"**/*.ts\"",
-    "test": "echo \"no test\" && exit 0"
+    "test": "jest"
   },
   "keywords": [],
   "author": "ooliver1 <oliverwilkes2006@icloud.com>",
   "license": "MIT",
   "devDependencies": {
     "@octokit/webhooks-types": "^5.6.0",
+    "@types/jest": "^27.5.1",
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^17.0.32",
+    "@typescript-eslint/eslint-plugin": "^5.23.0",
+    "@typescript-eslint/parser": "^5.23.0",
     "@vercel/ncc": "^0.33.4",
+    "jest": "^28.1.0",
     "ts-interface-builder": "^0.3.3"
   },
   "dependencies": {

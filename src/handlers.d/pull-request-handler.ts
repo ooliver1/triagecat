@@ -18,20 +18,9 @@ export default async function pullRequestHandler(config: ConfigFile) {
 }
 
 async function draftHandler(config: ConfigFile) {
-  console.log("draftHandler");
   if (config.prs?.drafts?.markInProgress) {
-    console.log("Marking PR as in progress");
     if (config.labels?.inProgress) {
-      console.log("Adding in progress label");
-      const client = getOctokit(getInput("repo-token", { required: true }));
-
-      client.rest.issues.addLabels({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        issue_number: context.issue.number,
-        labels: [config.labels.inProgress],
-      });
-      console.log("Added in progress label");
+      await addLabels(config.labels.inProgress);
     } else {
       throw new Error(
         "Cannot mark drafts in progress without specifying `labels.inProgress`"
@@ -40,4 +29,26 @@ async function draftHandler(config: ConfigFile) {
   }
 }
 
-async function readyForReviewHandler(_: ConfigFile) {}
+async function readyForReviewHandler(config: ConfigFile) {
+  if (config.prs?.drafts?.markAwaitingReview) {
+    if (config.labels?.awaitingReview) {
+      await addLabels(config.labels.awaitingReview);
+    } else {
+      throw new Error(
+        "Cannot mark non-drafts as awaiting review without specifying " +
+          "`labels.markAwaitingReview`"
+      );
+    }
+  }
+}
+
+async function addLabels(...labels: string[]) {
+  const client = getOctokit(getInput("repo-token", { required: true }));
+
+  client.rest.issues.addLabels({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    issue_number: context.issue.number,
+    labels: labels,
+  });
+}
