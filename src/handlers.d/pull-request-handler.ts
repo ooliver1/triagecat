@@ -23,7 +23,7 @@ async function draftHandler(config: ConfigFile) {
     console.log("Marking PR as in progress");
     if (config.labels?.inProgress) {
       console.log("Adding in progress label");
-      const client = getOctokit(getInput("TOKEN", { required: true }));
+      const client = getOctokit(getInput("repo-token", { required: true }));
 
       client.rest.issues.addLabels({
         owner: context.repo.owner,
