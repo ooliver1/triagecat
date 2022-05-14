@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-import { readFile } from "fs/promises";
-
 import { context, getOctokit } from "@actions/github";
 import { getInput } from "@actions/core";
 import { load } from "js-yaml";
@@ -44,9 +42,7 @@ export default async function run() {
 
 async function getConfig(token: string) {
   const configFile = getInput("config") || ".github/triagecat.yml";
-  const config: ConfigFile = JSON.parse(
-    await fetchContent(getOctokit(token), configFile)
-  );
+  const config: ConfigFile = load(await fetchContent(getOctokit(token), configFile));
   ConfigFile.check(config);
   return config;
 }
