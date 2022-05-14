@@ -13,6 +13,7 @@ GitHub action to automate managing repositories with labels, milestones and proj
 ### Example action
 
 `PAT` is stored in `settings/secrets/actions` and is a [GitHub PAT](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) with `write:org` acccess if you would like triagecat to manage a beta project board on your organisation.
+You most likely also need `settings/actions` `Workflow permissions` to be set to `Read and write permissions` or set the [`permissions`](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions) block in the workflow.
 
 ```yaml
 on:
