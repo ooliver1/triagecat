@@ -184,7 +184,12 @@ exports["default"] = run;
 function getConfig(token) {
     return __awaiter(this, void 0, void 0, function* () {
         const configFile = (0, core_1.getInput)("config") || ".github/triagecat.yml";
+<<<<<<< Updated upstream
         const config = (0, js_yaml_1.load)(yield fetchContent((0, github_1.getOctokit)(token), configFile));
+=======
+        const file = yield (0, promises_1.readFile)(configFile, "utf8");
+        const config = (0, js_yaml_1.load)(file);
+>>>>>>> Stashed changes
         ConfigFile.check(config);
         return config;
     });

@@ -20,7 +20,9 @@ const { ConfigFile } = createCheckers(ConfigFileTI) as {
 };
 
 export default async function run() {
+  console.log("run");
   const config = await getConfig(getInput("repo-token"));
+  console.log(config);
 
   switch (context.eventName) {
     case "pull_request":
