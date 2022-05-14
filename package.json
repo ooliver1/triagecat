@@ -1,0 +1,29 @@
+{
+  "name": "triagecat",
+  "version": "1.0.0",
+  "description":
+  "GitHub action to automate managing repositories with labels, milestones and projects.",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "ts-interface-builder types/config.d.ts && tsc && ncc build lib/main.js",
+    "format": "prettier --write \"**/*.ts\"",
+    "format-check": "prettier --check \"**/*.ts\"",
+    "test": "echo \"no test\" && exit 0"
+  },
+  "keywords": [],
+  "author": "ooliver1 <oliverwilkes2006@icloud.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@octokit/webhooks-types": "^5.6.0",
+    "@types/js-yaml": "^4.0.5",
+    "@types/node": "^17.0.32",
+    "@vercel/ncc": "^0.33.4",
+    "ts-interface-builder": "^0.3.3"
+  },
+  "dependencies": {
+    "@actions/core": "^1.8.1",
+    "@actions/github": "^5.0.2",
+    "js-yaml": "^4.1.0",
+    "ts-interface-checker": "^1.0.2"
+  }
+}
