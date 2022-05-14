@@ -54,7 +54,7 @@ function draftHandler(config) {
             console.log("Marking PR as in progress");
             if ((_c = config.labels) === null || _c === void 0 ? void 0 : _c.inProgress) {
                 console.log("Adding in progress label");
-                const client = (0, github_1.getOctokit)((0, core_1.getInput)("TOKEN", { required: true }));
+                const client = (0, github_1.getOctokit)((0, core_1.getInput)("repo-token", { required: true }));
                 client.rest.issues.addLabels({
                     owner: github_1.context.repo.owner,
                     repo: github_1.context.repo.repo,
