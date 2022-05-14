@@ -184,7 +184,7 @@ function run() {
 exports["default"] = run;
 function getConfig() {
     return __awaiter(this, void 0, void 0, function* () {
-        const configFile = (0, core_1.getInput)("config");
+        const configFile = (0, core_1.getInput)("config") || ".github/triagecat.yml";
         const file = yield (0, promises_1.readFile)(configFile, "utf8");
         const config = (0, js_yaml_1.load)(file);
         ConfigFile.check(config);
