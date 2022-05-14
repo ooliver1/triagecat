@@ -10,7 +10,7 @@ export default async function pullRequestHandler(config: ConfigFile) {
   const pr = payload.pull_request;
   console.log(payload);
 
-  if (payload.action in ["opened", "converted_to_draft"] && pr.draft == true) {
+  if (["opened", "converted_to_draft"].includes(payload.action) && pr.draft == true) {
     await draftHandler(config);
   } else if (payload.action in ["ready_for_review"]) {
     await readyForReviewHandler(config);
