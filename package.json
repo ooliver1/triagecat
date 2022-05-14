@@ -1,11 +1,10 @@
 {
   "name": "triagecat",
   "version": "1.0.0",
-  "description":
-  "GitHub action to automate managing repositories with labels, milestones and projects.",
+  "description": "GitHub action to automate managing repositories with labels, milestones and projects.",
   "main": "lib/index.js",
   "scripts": {
-    "build": "ts-interface-builder types/config.d.ts && tsc && ncc build lib/index.js",
+    "build": "ts-interface-builder src/types/config.d.ts && tsc && ncc build lib/index.js",
     "format": "prettier --write \"**/*.ts\"",
     "format-check": "prettier --check \"**/*.ts\"",
     "test": "echo \"no test\" && exit 0"
@@ -24,6 +23,7 @@
     "@actions/core": "^1.8.1",
     "@actions/github": "^5.0.2",
     "js-yaml": "^4.1.0",
-    "ts-interface-checker": "^1.0.2"
+    "ts-interface-checker": "^1.0.2",
+    "tunnel": "^0.0.6"
   }
 }

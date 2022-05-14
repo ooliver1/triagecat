@@ -15,9 +15,9 @@ export const ConfigFile = t.iface([], {
       "markAwaitingReview": t.opt("boolean"),
     })),
     "reviews": t.opt(t.iface([], {
-      "required": "integer",
+      "required": "number",
       "maintainers": t.opt(t.iface([], {
-        "required": "integer",
+        "required": "number",
         "permissions": t.opt(t.union(t.lit("triage"), t.lit("write"), t.lit("maintain"), t.lit("admin"))),
       })),
     })),
@@ -41,7 +41,7 @@ export const ConfigFile = t.iface([], {
     "milestone": "string",
   }))),
   "project": t.opt(t.iface([], {
-    "id": "integer",
+    "id": "number",
     "views": t.array(t.iface([], {
       "view": "string",
       "labels": t.array(t.iface([], {

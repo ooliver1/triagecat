@@ -11,9 +11,9 @@ declare interface ConfigFile {
       markAwaitingReview?: boolean;
     };
     reviews?: {
-      required: integer;
+      required: number;
       maintainers?: {
-        required: integer;
+        required: number;
         permissions?: "triage" | "write" | "maintain" | "admin";
       };
     };
@@ -40,7 +40,7 @@ declare interface ConfigFile {
   }>;
 
   project?: {
-    id: integer;
+    id: number;
     views: Array<{
       view: string;
       labels: Array<{
