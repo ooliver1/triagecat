@@ -6,7 +6,7 @@ import { context } from "@actions/github";
 import { getInput } from "@actions/core";
 import { load } from "js-yaml";
 
-import ConfigFileTI from "../types/config.d-ti";
+import ConfigFileTI from "./types/config.d-ti";
 import { createCheckers, Checker } from "ts-interface-checker";
 
 import {
