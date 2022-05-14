@@ -33,6 +33,7 @@ const core_1 = __nccwpck_require__(1033);
 const github_1 = __nccwpck_require__(5433);
 function pullRequestHandler(config) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log("pullRequestHandler");
         const payload = github_1.context.payload;
         const pr = payload.pull_request;
         if (payload.action in ["opened", "converted_to_draft"] && pr.draft == false) {
@@ -47,8 +48,11 @@ exports["default"] = pullRequestHandler;
 function draftHandler(config) {
     var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
+        console.log("draftHandler");
         if ((_b = (_a = config.prs) === null || _a === void 0 ? void 0 : _a.drafts) === null || _b === void 0 ? void 0 : _b.markInProgress) {
+            console.log("Marking PR as in progress");
             if ((_c = config.labels) === null || _c === void 0 ? void 0 : _c.inProgress) {
+                console.log("Adding in progress label");
                 const client = (0, github_1.getOctokit)((0, core_1.getInput)("TOKEN", { required: true }));
                 client.rest.issues.addLabels({
                     owner: github_1.context.repo.owner,
@@ -56,6 +60,7 @@ function draftHandler(config) {
                     issue_number: github_1.context.issue.number,
                     labels: [config.labels.inProgress],
                 });
+                console.log("Added in progress label");
             }
             else {
                 throw new Error("Cannot mark drafts in progress without specifying `labels.inProgress`");
@@ -161,7 +166,9 @@ const handlers_1 = __nccwpck_require__(7773);
 const { ConfigFile } = (0, ts_interface_checker_1.createCheckers)(config_d_ti_1.default);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log("run");
         const config = yield getConfig((0, core_1.getInput)("repo-token"));
+        console.log(config);
         switch (github_1.context.eventName) {
             case "pull_request":
                 yield (0, handlers_1.pullRequestHandler)(config);
@@ -184,12 +191,7 @@ exports["default"] = run;
 function getConfig(token) {
     return __awaiter(this, void 0, void 0, function* () {
         const configFile = (0, core_1.getInput)("config") || ".github/triagecat.yml";
-<<<<<<< Updated upstream
         const config = (0, js_yaml_1.load)(yield fetchContent((0, github_1.getOctokit)(token), configFile));
-=======
-        const file = yield (0, promises_1.readFile)(configFile, "utf8");
-        const config = (0, js_yaml_1.load)(file);
->>>>>>> Stashed changes
         ConfigFile.check(config);
         return config;
     });
