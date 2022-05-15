@@ -1,3 +1,5 @@
 // SPDX-License-Identifier: MIT
 
-export default console.log;
+export default (_: any) => {
+  throw new Error("Not implemented");
+};

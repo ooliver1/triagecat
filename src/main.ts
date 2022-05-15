@@ -20,10 +20,14 @@ const { ConfigFile } = createCheckers(ConfigFileTI) as {
 };
 
 export default async function run() {
-  console.log("run");
   const config = await getConfig(getInput("repo-token"));
-  console.log(config);
 
+  if (!context.eventName) {
+    // test or smth
+    return;
+  }
+
+  console.log(context.eventName);
   switch (context.eventName) {
     case "pull_request":
       await pullRequestHandler(config);
@@ -61,3 +65,5 @@ async function fetchContent(client: ClientType, repoPath: string): Promise<strin
 
   return Buffer.from(response.data.content, response.data.encoding).toString();
 }
+
+export const pain = (_: any) => {};

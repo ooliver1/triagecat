@@ -5,10 +5,6 @@ import * as t from "ts-interface-checker";
 // tslint:disable:object-literal-key-quotes
 
 export const ConfigFile = t.iface([], {
-  "actions": t.opt(t.iface([], {
-    "username": "string",
-    "email": t.opt("string"),
-  })),
   "prs": t.opt(t.iface([], {
     "drafts": t.opt(t.iface([], {
       "markInProgress": t.opt("boolean"),
