@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "GitHub action to automate managing repositories with labels, milestones and projects.",
   "main": "lib/index.js",
-  "type": "module",
   "scripts": {
     "build": "ts-interface-builder src/types/config.d.ts && tsc && ncc build lib/index.js",
     "format": "prettier --write \"**/*.ts\"",
