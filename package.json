@@ -8,8 +8,8 @@
     "format": "prettier --write \"**/*.ts\"",
     "format-check": "prettier --check \"**/*.ts\"",
     "test":
-    "npm run build && jest --config jest.config.js --verbose"
-  },
+    "jest --verbose"
+    },
   "keywords": [],
   "author": "ooliver1 <oliverwilkes2006@icloud.com>",
   "license": "MIT",
