@@ -1,5 +1,7 @@
 # triagecat
 
+[![Build and test](https://github.com/ooliver1/triagecat/actions/workflows/build.yml/badge.svg)](https://github.com/ooliver1/triagecat/actions/workflows/build.yml)
+
 GitHub action to automate managing repositories with labels, milestones and projects.
 
 - Link issues and PRs labels.
