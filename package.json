@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "GitHub action to automate managing repositories with labels, milestones and projects.",
   "main": "lib/index.js",
+  "type": "module",
   "scripts": {
-    "build": "ts-interface-builder src/types/config.d.ts && tsc && ncc build lib/index.js",
+    "build": "ts-interface-builder src/types/config.d.ts && ncc build src/index.ts --minify --source-map",
     "format": "prettier --write \"**/*.ts\"",
     "format-check": "prettier --check \"**/*.ts\"",
-    "test":
-    "jest --verbose"
+    "test": "jest --verbose"
     },
   "keywords": [],
   "author": "ooliver1 <oliverwilkes2006@icloud.com>",
