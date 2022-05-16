@@ -16,6 +16,7 @@ export const ConfigFile = t.iface([], {
         "required": "number",
         "permissions": t.opt(t.union(t.lit("triage"), t.lit("write"), t.lit("maintain"), t.lit("admin"))),
       })),
+      "askToFixChanges": t.opt("boolean"),
     })),
     "invalidateClosed": t.opt("boolean"),
   })),
