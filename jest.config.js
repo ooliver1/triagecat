@@ -10,7 +10,7 @@ export default {
     },
   },
   testRegex: "/test/.*\\.test\\.ts$",
-  collectCoverageFrom: ["src/**/*.{ts,js}"],
+  collectCoverageFrom: ["src/**/{!(*.d-ti),}.{ts,js}"],
   clearMocks: true,
   collectCoverage: true,
 };

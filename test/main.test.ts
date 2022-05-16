@@ -36,111 +36,116 @@ describe("pull_request", () => {
     mockEventName.mockReturnValue("pull_request");
   });
 
-  test("Mark drafts as in progress", async () => {
-    mockConfig("draftsInProgress");
-    getIssueMock.mockReturnValue(<any>{
-      data: {
-        labels: ["awaiting review"],
-      },
-    });
-    mockPayload.mockReturnValue({
-      pull_request: {
-        draft: true,
-      },
-      issue: {
-        number: 123,
-      },
-      action: "converted_to_draft",
-    });
+  describe("drafts", () => {
+    describe("in progress", () => {
+      test("mark", async () => {
+        mockConfig("draftsInProgress");
+        getIssueMock.mockReturnValue(<any>{
+          data: {
+            labels: ["awaiting review"],
+          },
+        });
+        mockPayload.mockReturnValue({
+          pull_request: {
+            draft: true,
+          },
+          issue: {
+            number: 123,
+          },
+          action: "converted_to_draft",
+        });
 
-    await run();
+        await run();
 
-    expect(setLabelsMock).toHaveBeenCalledTimes(1);
-    expect(setLabelsMock).toHaveBeenCalledWith({
-      owner: "ooliver1",
-      repo: "h",
-      issue_number: 123,
-      labels: ["in progress"],
-    });
-  });
+        expect(setLabelsMock).toHaveBeenCalledTimes(1);
+        expect(setLabelsMock).toHaveBeenCalledWith({
+          owner: "ooliver1",
+          repo: "h",
+          issue_number: 123,
+          labels: ["in progress"],
+        });
+      });
 
-  test("Do not mark drafts without config", async () => {
-    mockConfig("draftsDoNotMark");
-    getIssueMock.mockReturnValue(<any>{
-      data: {
-        labels: ["awaiting review"],
-      },
-    });
-    mockPayload.mockReturnValue({
-      pull_request: {
-        draft: true,
-      },
-      issue: {
-        number: 123,
-      },
-      action: "converted_to_draft",
-    });
+      test("do not mark", async () => {
+        mockConfig("draftsDoNotMark");
+        getIssueMock.mockReturnValue(<any>{
+          data: {
+            labels: ["awaiting review"],
+          },
+        });
+        mockPayload.mockReturnValue({
+          pull_request: {
+            draft: true,
+          },
+          issue: {
+            number: 123,
+          },
+          action: "converted_to_draft",
+        });
 
-    await run();
+        await run();
 
-    expect(setLabelsMock).toHaveBeenCalledTimes(0);
-  });
-
-  test("Mark non-drafts as awaiting review", async () => {
-    mockConfig("draftsInProgress");
-    getIssueMock.mockReturnValue(<any>{
-      data: {
-        labels: ["in progress"],
-      },
-    });
-    mockPayload.mockReturnValue({
-      pull_request: {
-        draft: false,
-      },
-      issue: {
-        number: 123,
-      },
-      action: "ready_for_review",
+        expect(setLabelsMock).toHaveBeenCalledTimes(0);
+      });
     });
 
-    await run();
+    describe("awaiting review", () => {
+      test("mark", async () => {
+        mockConfig("draftsInProgress");
+        getIssueMock.mockReturnValue(<any>{
+          data: {
+            labels: ["in progress"],
+          },
+        });
+        mockPayload.mockReturnValue({
+          pull_request: {
+            draft: false,
+          },
+          issue: {
+            number: 123,
+          },
+          action: "ready_for_review",
+        });
 
-    expect(setLabelsMock).toHaveBeenCalledTimes(1);
-    expect(setLabelsMock).toHaveBeenCalledWith({
-      owner: "ooliver1",
-      repo: "h",
-      issue_number: 123,
-      labels: ["awaiting review"],
+        await run();
+
+        expect(setLabelsMock).toHaveBeenCalledTimes(1);
+        expect(setLabelsMock).toHaveBeenCalledWith({
+          owner: "ooliver1",
+          repo: "h",
+          issue_number: 123,
+          labels: ["awaiting review"],
+        });
+      });
+
+      test("do not mark", async () => {
+        mockConfig("draftsDoNotMark");
+        getIssueMock.mockReturnValue(<any>{
+          data: {
+            labels: ["in progress"],
+          },
+        });
+        mockPayload.mockReturnValue({
+          pull_request: {
+            draft: false,
+          },
+          issue: {
+            number: 123,
+          },
+          action: "ready_for_review",
+        });
+
+        await run();
+
+        expect(setLabelsMock).toHaveBeenCalledTimes(0);
+      });
     });
-  });
-
-  test("Do not mark non-drafts without config", async () => {
-    mockConfig("draftsDoNotMark");
-    getIssueMock.mockReturnValue(<any>{
-      data: {
-        labels: ["in progress"],
-      },
-    });
-    mockPayload.mockReturnValue({
-      pull_request: {
-        draft: false,
-      },
-      issue: {
-        number: 123,
-      },
-      action: "ready_for_review",
-    });
-
-    await run();
-
-    expect(setLabelsMock).toHaveBeenCalledTimes(0);
   });
 });
 
 ["pull_request_review", "issues", "workflow_dispatch"].forEach(async (event) => {
   describe(event, () => {
     test("Not implemented", async () => {
-      console.log("h", event);
       mockEventName.mockReturnValue(event);
       await expect(run()).rejects.toThrowError("Not implemented");
     });

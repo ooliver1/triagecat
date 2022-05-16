@@ -27,7 +27,6 @@ export default async function run() {
     return;
   }
 
-  console.log(context.eventName);
   switch (context.eventName) {
     case "pull_request":
       await pullRequestHandler(config);
