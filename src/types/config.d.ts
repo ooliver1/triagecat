@@ -12,6 +12,7 @@ declare interface ConfigFile {
         required: number;
         permissions?: "triage" | "write" | "maintain" | "admin";
       };
+      askToFixChanges?: boolean;
     };
     invalidateClosed?: boolean;
   };
