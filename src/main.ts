@@ -23,6 +23,8 @@ const { ConfigFile } = createCheckers(ConfigFileTI) as {
 export default async function run() {
   const config = await getConfig(getInput("repo-token"));
 
+  console.log("Recieved\n", context.payload);
+
   if (!context.eventName) {
     // test or smth
     return;
