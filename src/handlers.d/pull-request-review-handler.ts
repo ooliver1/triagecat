@@ -9,18 +9,22 @@ export default async function pullRequestReviewHandler(config: ConfigFile) {
   const payload = context.payload as PullRequestReviewEvent;
   const review = payload.review;
 
-  if (review.state === "approved") {
+  if (payload.action === "submitted" && review.state === "approved") {
     await handleApprove(config, payload);
   }
 }
 
 async function handleApprove(config: ConfigFile, payload: PullRequestReviewEvent) {
+  console.log("handling");
   if (config.prs?.reviews?.required || config.prs?.reviews?.maintainers?.required) {
+    console.log("configy");
     if (config?.labels?.awaitingMerge) {
+      console.log("lebel");
       const mergeLabel = config.labels.awaitingMerge;
       const remove = config.labels.awaitingReview;
 
       if (payload.pull_request.labels.some((label) => mergeLabel === label.name)) {
+        console.log("labelled");
         return;
       }
 
@@ -31,6 +35,7 @@ async function handleApprove(config: ConfigFile, payload: PullRequestReviewEvent
         repo: context.repo.repo,
         pull_number: context.issue.number,
       });
+      console.log("got reviews");
 
       const had: number[] = [];
       const approvals = reviews.data.filter(
@@ -40,6 +45,9 @@ async function handleApprove(config: ConfigFile, payload: PullRequestReviewEvent
           !(!review.user.id || had.includes(review.user.id))
         // get unique reviews based on user id
       );
+
+      console.log(approvals.length);
+      console.log(config.prs?.reviews?.required);
 
       if (config.prs.reviews.maintainers?.required) {
         const levels = getPermissionLevels(config.prs.reviews.maintainers.permissions);
@@ -68,6 +76,7 @@ async function handleApprove(config: ConfigFile, payload: PullRequestReviewEvent
           }
         }
       } else if (approvals.length >= config.prs.reviews.required) {
+        console.log("adding");
         await modifyLabels(mergeLabel, remove);
       }
     } else {
