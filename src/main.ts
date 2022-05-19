@@ -10,8 +10,9 @@ import { createCheckers, Checker } from "ts-interface-checker";
 import {
   pullRequestHandler,
   pullRequestReviewHandler,
-  issuesHandler,
-  workflowDispatchHandler,
+  // issuesHandler,
+  // workflowDispatchHandler,
+  // issueCommentHandler,
 } from "./handlers";
 
 type ClientType = ReturnType<typeof getOctokit>;
@@ -34,12 +35,15 @@ export default async function run() {
     case "pull_request_review":
       await pullRequestReviewHandler(config);
       break;
-    case "issues":
-      await issuesHandler(config);
-      break;
-    case "workflow_dispatch":
-      await workflowDispatchHandler(config);
-      break;
+    // case "issues":
+    //   await issuesHandler(config);
+    //   break;
+    // case "workflow_dispatch":
+    //   await workflowDispatchHandler(config);
+    //   break;
+    // case "issue_comment":
+    //   await issueCommentHandler(config);
+    //   break;
     default:
       throw new Error(`Unsupported event: ${context.eventName}`);
   }
@@ -64,5 +68,3 @@ async function fetchContent(client: ClientType, repoPath: string): Promise<strin
 
   return Buffer.from(response.data.content, response.data.encoding).toString();
 }
-
-export const pain = (_: any) => {};
