@@ -5,6 +5,8 @@ on:
     types: [labeled, unlabeled, opened, closed, converted_to_draft, ready_for_review]
   pull_request_review:
     types: [submitted]
+  issue_comment:
+    types: [created]
   workflow_dispatch:
 
 jobs:
