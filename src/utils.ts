@@ -29,11 +29,15 @@ export async function modifyLabels(
     labels.splice(labels.indexOf(remove), 1);
   }
 
-  await client.rest.issues.setLabels({
+  const resp = await client.rest.issues.setLabels({
     owner: context.repo.owner,
     repo: context.repo.repo,
     issue_number: context.issue.number,
     labels: labels,
   });
-  console.log("Added", add, "to #", context.issue.number, "and removed", remove);
+  if (resp.status >= 200 && resp.status < 300) {
+    console.log("Added", add, "to #", context.issue.number, "and removed", remove);
+  } else {
+    console.error("Got HTTP", resp.status);
+  }
 }
