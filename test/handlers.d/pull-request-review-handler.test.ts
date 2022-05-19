@@ -26,7 +26,7 @@ describe("Unit required review and maintainer review labelling", () => {
     mockPayload.mockReturnValue(<any>{
       action: "submitted",
       review: {
-        state: "APPROVED",
+        state: "approved",
       },
       pull_request: {
         labels: [{ name: "awaiting merge" }],

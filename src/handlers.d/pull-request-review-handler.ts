@@ -9,7 +9,7 @@ export default async function pullRequestReviewHandler(config: ConfigFile) {
   const payload = context.payload as PullRequestReviewEvent;
   const review = payload.review;
 
-  if (review.state === "APPROVED") {
+  if (review.state === "approved") {
     await handleApprove(config, payload);
   }
 }
@@ -36,7 +36,7 @@ async function handleApprove(config: ConfigFile, payload: PullRequestReviewEvent
       const approvals = reviews.data.filter(
         (review) =>
           review.user &&
-          review.state === "APPROVED" &&
+          review.state === "approved" &&
           !(!review.user.id || had.includes(review.user.id))
         // get unique reviews based on user id
       );

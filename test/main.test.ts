@@ -145,7 +145,7 @@ describe("prs", () => {
               user: {
                 id: 123,
               },
-              state: "APPROVED",
+              state: "approved",
             },
           ],
         });
@@ -161,7 +161,7 @@ describe("prs", () => {
             user: {
               id: 123,
             },
-            state: "APPROVED",
+            state: "approved",
           },
         });
       });
@@ -202,7 +202,7 @@ describe("prs", () => {
               user: {
                 id: 123,
               },
-              state: "APPROVED",
+              state: "approved",
             },
           ],
         });
@@ -218,7 +218,7 @@ describe("prs", () => {
             user: {
               id: 123,
             },
-            state: "APPROVED",
+            state: "approved",
           },
         });
         getCollaboratorPermissionLevelMock.mockReturnValue(<any>{
