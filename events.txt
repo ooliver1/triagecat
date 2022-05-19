@@ -1,4 +1,5 @@
-issues: [opened. closed, labeled, unlabeled, milestoned, demilestoned]
+issues: [opened, closed, labeled, unlabeled, milestoned, demilestoned]
 pull_request: [labeled, unlabeled, opened, closed, converted_to_draft, ready_for_review]
 pull_request_review: [submitted]
+issue_comment: [created]
 workflow_dispatch:
