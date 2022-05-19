@@ -45,6 +45,7 @@ async function handleApprove(config: ConfigFile, payload: PullRequestReviewEvent
           !(!review.user.id || had.includes(review.user.id))
         // get unique reviews based on user id
       );
+      console.log(reviews.data);
 
       console.log(approvals.length);
       console.log(config.prs?.reviews?.required);
