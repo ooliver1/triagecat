@@ -14,10 +14,16 @@ const gh = github.getOctokit("_");
 const setLabelsMock = jest.spyOn(gh.rest.issues, "setLabels");
 const getContentMock = jest.spyOn(gh.rest.repos, "getContent");
 const getIssueMock = jest.spyOn(gh.rest.issues, "get");
+const listReviewsMock = jest.spyOn(gh.rest.pulls, "listReviews");
+const getCollaboratorPermissionLevelMock = jest.spyOn(
+  gh.rest.repos,
+  "getCollaboratorPermissionLevel"
+);
 
 const configs: Record<string, string> = {
-  draftsInProgress: fs.readFileSync("test/configs/drafts-in-progress.yml"),
-  draftsDoNotMark: fs.readFileSync("test/configs/drafts-do-not-mark.yml"),
+  draftsMark: fs.readFileSync("test/configs/drafts-mark.yml"),
+  reviewsMark: fs.readFileSync("test/configs/reviews-mark.yml"),
+  reviewsMaintainersMark: fs.readFileSync("test/configs/reviews-maintainers-mark.yml"),
 };
 
 const mockInput: Record<string, string> = {
@@ -29,17 +35,21 @@ jest
   .spyOn(core, "getInput")
   .mockImplementation(<any>((name: string, ..._: any[]) => mockInput[name]));
 
+afterEach(() =>
+  getContentMock.mockImplementation((..._) => {
+    return <any>{ data: { content: "h: h", encoding: "utf8" } };
+  })
+);
 afterAll(() => jest.restoreAllMocks());
 
-describe("pull_request", () => {
-  beforeEach(() => {
-    mockEventName.mockReturnValue("pull_request");
-  });
-
+describe("prs", () => {
   describe("drafts", () => {
+    beforeEach(() => {
+      mockEventName.mockReturnValue("pull_request");
+    });
+
     describe("in progress", () => {
-      test("mark", async () => {
-        mockConfig("draftsInProgress");
+      beforeEach(() => {
         getIssueMock.mockReturnValue(<any>{
           data: {
             labels: ["awaiting review"],
@@ -54,6 +64,10 @@ describe("pull_request", () => {
           },
           action: "converted_to_draft",
         });
+      });
+
+      test("mark", async () => {
+        mockConfig("draftsMark");
 
         await run();
 
@@ -67,22 +81,6 @@ describe("pull_request", () => {
       });
 
       test("do not mark", async () => {
-        mockConfig("draftsDoNotMark");
-        getIssueMock.mockReturnValue(<any>{
-          data: {
-            labels: ["awaiting review"],
-          },
-        });
-        mockPayload.mockReturnValue({
-          pull_request: {
-            draft: true,
-          },
-          issue: {
-            number: 123,
-          },
-          action: "converted_to_draft",
-        });
-
         await run();
 
         expect(setLabelsMock).toHaveBeenCalledTimes(0);
@@ -90,8 +88,7 @@ describe("pull_request", () => {
     });
 
     describe("awaiting review", () => {
-      test("mark", async () => {
-        mockConfig("draftsInProgress");
+      beforeEach(() => {
         getIssueMock.mockReturnValue(<any>{
           data: {
             labels: ["in progress"],
@@ -106,6 +103,10 @@ describe("pull_request", () => {
           },
           action: "ready_for_review",
         });
+      });
+
+      test("mark", async () => {
+        mockConfig("draftsMark");
 
         await run();
 
@@ -119,35 +120,143 @@ describe("pull_request", () => {
       });
 
       test("do not mark", async () => {
-        mockConfig("draftsDoNotMark");
-        getIssueMock.mockReturnValue(<any>{
-          data: {
-            labels: ["in progress"],
-          },
-        });
-        mockPayload.mockReturnValue({
-          pull_request: {
-            draft: false,
-          },
-          issue: {
-            number: 123,
-          },
-          action: "ready_for_review",
-        });
-
         await run();
 
         expect(setLabelsMock).toHaveBeenCalledTimes(0);
       });
     });
   });
-});
 
-["pull_request_review", "issues", "workflow_dispatch"].forEach(async (event) => {
-  describe(event, () => {
-    test("Not implemented", async () => {
-      mockEventName.mockReturnValue(event);
-      await expect(run()).rejects.toThrowError("Not implemented");
+  describe("reviews", () => {
+    beforeEach(() => {
+      mockEventName.mockReturnValue("pull_request_review");
+    });
+
+    describe("required", () => {
+      beforeEach(() => {
+        getIssueMock.mockReturnValue(<any>{
+          data: {
+            labels: ["awaiting review"],
+          },
+        });
+        listReviewsMock.mockReturnValue(<any>{
+          data: [
+            {
+              user: {
+                id: 123,
+              },
+              state: "APPROVED",
+            },
+          ],
+        });
+        mockPayload.mockReturnValue(<any>{
+          pull_request: {
+            labels: ["awaiting review"],
+          },
+          issue: {
+            number: 123,
+          },
+          action: "submitted",
+          review: {
+            user: {
+              id: 123,
+            },
+            state: "APPROVED",
+          },
+        });
+      });
+
+      test("mark", async () => {
+        mockConfig("reviewsMark");
+
+        await run();
+
+        expect(setLabelsMock).toHaveBeenCalledTimes(1);
+        expect(setLabelsMock).toHaveBeenCalledWith({
+          owner: "ooliver1",
+          repo: "h",
+          issue_number: 123,
+          labels: ["awaiting merge"],
+        });
+      });
+
+      test("do not mark", async () => {
+        await run();
+
+        expect(setLabelsMock).toHaveBeenCalledTimes(0);
+      });
+    });
+  });
+
+  describe("maintainers", () => {
+    describe("required", () => {
+      beforeEach(() => {
+        getIssueMock.mockReturnValue(<any>{
+          data: {
+            labels: ["awaiting review"],
+          },
+        });
+        listReviewsMock.mockReturnValue(<any>{
+          data: [
+            {
+              user: {
+                id: 123,
+              },
+              state: "APPROVED",
+            },
+          ],
+        });
+        mockPayload.mockReturnValue(<any>{
+          pull_request: {
+            labels: ["awaiting review"],
+          },
+          issue: {
+            number: 123,
+          },
+          action: "submitted",
+          review: {
+            user: {
+              id: 123,
+            },
+            state: "APPROVED",
+          },
+        });
+        getCollaboratorPermissionLevelMock.mockReturnValue(<any>{
+          data: {
+            permission: "write",
+          },
+        });
+      });
+
+      test("mark", async () => {
+        mockConfig("reviewsMaintainersMark");
+
+        await run();
+
+        expect(setLabelsMock).toHaveBeenCalledTimes(1);
+        expect(setLabelsMock).toHaveBeenCalledWith({
+          owner: "ooliver1",
+          repo: "h",
+          issue_number: 123,
+          labels: ["awaiting merge"],
+        });
+      });
+
+      test("do not mark", async () => {
+        await run();
+
+        expect(setLabelsMock).toHaveBeenCalledTimes(0);
+      });
+    });
+
+    describe("permissions", () => {
+      test("mark", async () => {
+        //
+      });
+
+      test("do not mark", async () => {
+        //
+      });
     });
   });
 });

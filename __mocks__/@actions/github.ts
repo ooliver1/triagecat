@@ -27,6 +27,10 @@ const mockApi = {
       getContent: jest.fn((..._) => {
         return { data: { content: "h: h", encoding: "utf8" } };
       }),
+      getCollaboratorPermissionLevel: jest.fn(),
+    },
+    pulls: {
+      listReviews: jest.fn(),
     },
   },
 };

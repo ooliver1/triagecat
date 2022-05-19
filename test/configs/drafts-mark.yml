@@ -1,0 +1,8 @@
+prs:
+  drafts:
+    markInProgress: true
+    markAwaitingReview: true
+
+labels:
+  inProgress: in progress
+  awaitingReview: awaiting review

@@ -1,0 +1,9 @@
+prs:
+  reviews:
+    required: 1
+    mantainers:
+      required: 1
+
+labels:
+  awaitingMerge: awaiting merge
+  awaitingReview: awaiting review
