@@ -34,7 +34,7 @@ describe("Unit test drafts and non-draft labelling", () => {
     );
   });
 
-  test("Raise if incorrect inProgress config", async () => {
+  test("Raise if incorrect awaitingReview config", async () => {
     mockPayload.mockReturnValue({
       pull_request: {
         draft: false,
