@@ -21,7 +21,7 @@ export default async function pullRequestHandler(config: ConfigFile) {
 async function draftHandler(config: ConfigFile) {
   if (config.prs?.drafts?.markInProgress) {
     if (config.labels?.inProgress) {
-      const remove = config.labels?.awaitingReview;
+      const remove = config.labels.awaitingReview;
       await modifyLabels(config.labels.inProgress, remove);
     } else {
       throw new Error(
@@ -34,7 +34,7 @@ async function draftHandler(config: ConfigFile) {
 async function readyForReviewHandler(config: ConfigFile) {
   if (config.prs?.drafts?.markAwaitingReview) {
     if (config.labels?.awaitingReview) {
-      const remove = config.labels?.inProgress;
+      const remove = config.labels.inProgress;
       await modifyLabels(config.labels.awaitingReview, remove);
     } else {
       throw new Error(
