@@ -7,7 +7,7 @@ declare interface ConfigFile {
       markAwaitingReview?: boolean;
     };
     reviews?: {
-      required: number;
+      required?: number;
       maintainers?: {
         required: number;
         permissions?: "triage" | "write" | "maintain" | "admin";
