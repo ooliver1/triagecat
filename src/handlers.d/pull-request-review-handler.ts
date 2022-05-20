@@ -16,7 +16,7 @@ export default async function pullRequestReviewHandler(config: ConfigFile) {
 
 async function handleApprove(config: ConfigFile, payload: PullRequestReviewEvent) {
   if (config.prs?.reviews?.required || config.prs?.reviews?.maintainers?.required) {
-    if (config?.labels?.awaitingMerge) {
+    if (config.labels?.awaitingMerge) {
       const mergeLabel = config.labels.awaitingMerge;
       const remove = config.labels.awaitingReview;
 
