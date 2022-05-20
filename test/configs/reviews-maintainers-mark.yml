@@ -1,6 +1,6 @@
 prs:
   reviews:
-    mantainers:
+    maintainers:
       required: 1
 
 labels:
