@@ -11,7 +11,7 @@ export const ConfigFile = t.iface([], {
       "markAwaitingReview": t.opt("boolean"),
     })),
     "reviews": t.opt(t.iface([], {
-      "required": "number",
+      "required": t.opt("number"),
       "maintainers": t.opt(t.iface([], {
         "required": "number",
         "permissions": t.opt(t.union(t.lit("triage"), t.lit("write"), t.lit("maintain"), t.lit("admin"))),
