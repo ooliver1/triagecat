@@ -40,4 +40,17 @@ describe("Unit required review and maintainer review labelling", () => {
 
     await pullRequestReviewHandler(config);
   });
+
+  test("Raise if incorrect inProgress config", async () => {
+    mockPayload.mockReturnValue({
+      review: {
+        state: "approved",
+      },
+      action: "submitted",
+    });
+    const config = { prs: { reviews: { required: 1 } } };
+    expect(pullRequestReviewHandler(config)).rejects.toThrowError(
+      "Cannot mark prs awaiting merge without specifying `labels.awaitingMerge`"
+    );
+  });
 });
