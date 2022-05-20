@@ -1,6 +1,13 @@
 # triagecat
 
-[![Build and test](https://github.com/ooliver1/triagecat/actions/workflows/build.yml/badge.svg)](https://github.com/ooliver1/triagecat/actions/workflows/build.yml)
+[![Build and test](https://custom-icon-badges.herokuapp.com/github/workflow/status/ooliver1/triagecat/Build%20and%20test?logo=codescan-checkmark&logoColor=white)](https://github.com/ooliver1/triagecat/actions/workflows/build.yml "Build workflow")
+[![Codecov coverage](https://custom-icon-badges.herokuapp.com/codecov/c/github/ooliver1/triagecat?logo=file-diff&logoColor=white)](https://app.codecov.io/gh/ooliver1/triagecat "Codecov coverage")
+[![Distribution file size](https://custom-icon-badges.herokuapp.com/github/size/ooliver1/triagecat/dist/index.js?logo=file-code&logoColor=white)](https://github.com/ooliver1/triagecat/blob/master/dist/index.js "DIstribution file")
+[![Lines of code](https://custom-icon-badges.herokuapp.com/tokei/lines/github/ooliver1/triagecat?logo=quote&logoColor=white)](https://github.com/ooliver1/triagecat "Repository")
+[![Open issue count](https://custom-icon-badges.herokuapp.com/github/issues-raw/ooliver1/triagecat?logo=issue-opened&logoColor=white)](https://github.com/ooliver1/triagecat/issues "Open github issues")
+[![Open pull requests](https://custom-icon-badges.herokuapp.com/github/issues-pr-raw/ooliver1/triagecat?logo=git-pull-request&logoColor=white)](https://github.com/ooliver1/triagecat/pulls "Open github pull requests")
+[![License](https://custom-icon-badges.herokuapp.com/github/license/ooliver1/triagecat?logo=file-badge&logoColor=white)](https://github.com/ooliver1/triagecat/blob/master/LICENSE "License file")
+[![Releases](https://custom-icon-badges.herokuapp.com/github/v/release/ooliver1/triagecat?display_name=tag&include_prereleases&sort=semver&logo=commit&logoColor=white)](https://github.com/ooliver1/triagecat/releases "Triagecat releases")
 
 GitHub action to automate managing repositories with labels, milestones and projects.
 
