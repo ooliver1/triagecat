@@ -67,7 +67,10 @@ async function handleApprove(config: ConfigFile, payload: PullRequestReviewEvent
             await modifyLabels(mergeLabel, remove);
           }
         }
-      } else if (approvals.length >= config.prs.reviews.required) {
+      } else if (
+        config.prs.reviews.required &&
+        approvals.length >= config.prs.reviews.required
+      ) {
         await modifyLabels(mergeLabel, remove);
       }
     } else {
