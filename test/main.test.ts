@@ -21,9 +21,17 @@ const getCollaboratorPermissionLevelMock = jest.spyOn(
 );
 
 const configs: Record<string, string> = {
-  draftsMark: fs.readFileSync("test/configs/drafts-mark.yml"),
-  reviewsMark: fs.readFileSync("test/configs/reviews-mark.yml"),
-  reviewsMaintainersMark: fs.readFileSync("test/configs/reviews-maintainers-mark.yml"),
+  draftsMark: fs.readFileSync("test/configs/prs/drafts/mark.yml"),
+  reviewsMark: fs.readFileSync("test/configs/prs/reviews/mark.yml"),
+  reviewsMaintainersMark: fs.readFileSync(
+    "test/configs/prs/reviews/maintainers/required/mark.yml"
+  ),
+  reviewsMaintainersPermissionsMark: fs.readFileSync(
+    "test/configs/prs/reviews/maintainers/permissions/mark.yml"
+  ),
+  reviewsMaintainersPermissionsDoNotMark: fs.readFileSync(
+    "test/configs/prs/reviews/maintainers/permissions/do-not-mark.yml"
+  ),
 };
 
 const mockInput: Record<string, string> = {
