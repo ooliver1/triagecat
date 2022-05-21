@@ -16,4 +16,4 @@ jobs:
     steps:
       - uses: ooliver1/triagecat@master
         with:
-          repo-token: ${{ secrets.PAT }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
