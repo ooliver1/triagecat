@@ -16,4 +16,4 @@ jobs:
     steps:
       - uses: ooliver1/triagecat@master
         with:
-          TOKEN: ${{ secrets.PAT }}
+          repo-token: ${{ secrets.PAT }}
