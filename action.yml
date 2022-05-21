@@ -1,6 +1,9 @@
 name: "triagecat"
 description: "GitHub action to automate managing repositories with labels, milestones and projects."
 author: "GitHub"
+branding:
+  color: purple
+  icon: check-circle
 inputs:
   org-token:
     description: "A github PAT with org:write for project board management"
