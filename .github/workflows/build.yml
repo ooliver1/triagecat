@@ -1,10 +1,10 @@
 on: [push, pull_request]
 
-name: Build and test
+name: Build, Test and Codecov
 
 jobs:
   build:
-    name: Build
+    name: Build, Test and Codecov
     runs-on: ubuntu-latest
 
     steps:
