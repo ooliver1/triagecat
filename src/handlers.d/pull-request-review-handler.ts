@@ -51,7 +51,7 @@ async function handleApprove(config: ConfigFile, payload: PullRequestReviewEvent
             approval.user.name &&
             // octokit doesnt define permissions yet github does
             // @ts-expect-error
-            (await getPerms(approval.user.name)).data.user?.permissions[required]
+            (await getPerms(approval.user.name)).data.user.permissions[required]
           ) {
             maintainers.push(approval);
           }
@@ -59,6 +59,7 @@ async function handleApprove(config: ConfigFile, payload: PullRequestReviewEvent
 
         if (maintainers.length >= config.prs.reviews.maintainers.required) {
           if (config.prs.reviews.required) {
+            console.log("im here")
             if (approvals.length >= config.prs.reviews.required) {
               await modifyLabels(mergeLabel, remove);
             }

@@ -24,9 +24,19 @@ export async function modifyLabels(
         })()
   );
 
+  // incase somehow this happens, avoid duplicates
+  const index = labels.indexOf(add);
+  if (index !== -1) {
+    labels.splice(index, 1);
+  }
+
   labels.push(add);
+
   if (remove) {
-    labels.splice(labels.indexOf(remove), 1);
+    const index = labels.indexOf(remove);
+    if (index !== -1) {
+      labels.splice(index, 1);
+    }
   }
 
   await client.rest.issues.setLabels({
