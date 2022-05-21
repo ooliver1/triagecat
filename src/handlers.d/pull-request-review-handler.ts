@@ -42,21 +42,20 @@ async function handleApprove(config: ConfigFile, payload: PullRequestReviewEvent
       );
 
       if (config.prs.reviews.maintainers?.required) {
-        const levels = getPermissionLevels(config.prs.reviews.maintainers.permissions);
+        const required = config.prs.reviews.maintainers.permissions || "push";
 
-        const maintainers = approvals.filter(async (review) => {
-          review.user &&
-            review.user.name &&
-            levels.includes(
-              (
-                await client.rest.repos.getCollaboratorPermissionLevel({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  username: review.user.name,
-                })
-              ).data.permission
-            );
-        });
+        const maintainers = [];
+        for (const approval of approvals) {
+          if (
+            approval.user &&
+            approval.user.name &&
+            // octokit doesnt define permissions yet github does
+            // @ts-expect-error
+            (await getPerms(approval.user.name)).data.user?.permissions[required]
+          ) {
+            maintainers.push(approval);
+          }
+        }
 
         if (maintainers.length >= config.prs.reviews.maintainers.required) {
           if (config.prs.reviews.required) {
@@ -81,12 +80,11 @@ async function handleApprove(config: ConfigFile, payload: PullRequestReviewEvent
   }
 }
 
-function getPermissionLevels(level: string | undefined) {
-  if (level === "admin") {
-    return ["admin"];
-  } else if (level === "read") {
-    return ["admin", "write", "read"];
-  } else {
-    return ["admin", "write"];
-  }
+async function getPerms(user: string) {
+  const client = getOctokit(getInput("repo-token", { required: true }));
+  return await client.rest.repos.getCollaboratorPermissionLevel({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    username: user,
+  });
 }

@@ -208,6 +208,7 @@ describe("prs", () => {
           {
             user: {
               id: 123,
+              name: "ooliver1",
             },
             state: "approved",
           },
@@ -230,12 +231,20 @@ describe("prs", () => {
       });
       getCollaboratorPermissionLevelMock.mockReturnValue(<any>{
         data: {
-          permission: "write",
+          user: {
+            permissions: {
+              admin: false,
+              maintain: true,
+              push: true,
+              triage: true,
+              pull: true,
+            },
+          },
         },
       });
+    });
 
-      describe("required", () => {});
-
+    describe("required", () => {
       test("mark", async () => {
         mockConfig("maintainersMark");
 
@@ -256,15 +265,29 @@ describe("prs", () => {
         expect(setLabelsMock).toHaveBeenCalledTimes(0);
       });
     });
+  });
 
-    describe("permissions", () => {
-      test("mark", async () => {
-        //
-      });
+  describe("permissions", () => {
+    test("mark", async () => {
+      mockConfig("permissionsMark");
 
-      test("do not mark", async () => {
-        //
+      await run();
+
+      expect(setLabelsMock).toHaveBeenCalledTimes(1);
+      expect(setLabelsMock).toHaveBeenCalledWith({
+        owner: "ooliver1",
+        repo: "h",
+        issue_number: 123,
+        labels: ["awaiting merge"],
       });
+    });
+
+    test("do not mark", async () => {
+      mockConfig("permissionsDoNotMark");
+
+      await run();
+
+      expect(setLabelsMock).toHaveBeenCalledTimes(0);
     });
   });
 });

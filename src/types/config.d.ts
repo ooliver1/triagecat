@@ -10,7 +10,7 @@ declare interface ConfigFile {
       required?: number;
       maintainers?: {
         required: number;
-        permissions?: "triage" | "write" | "maintain" | "admin";
+        permissions?: "pull" | "triage" | "push" | "maintain" | "admin";
       };
       askToFixChanges?: boolean;
     };

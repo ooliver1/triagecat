@@ -3,3 +3,7 @@ prs:
     maintainers:
       required: 1
       permissions: admin
+
+labels:
+  awaitingMerge: awaiting merge
+  awaitingReview: awaiting review

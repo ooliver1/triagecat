@@ -2,4 +2,8 @@ prs:
   reviews:
     maintainers:
       required: 1
-      permissions: read
+      permissions: pull
+
+labels:
+  awaitingMerge: awaiting merge
+  awaitingReview: awaiting review
