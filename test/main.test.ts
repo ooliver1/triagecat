@@ -189,44 +189,44 @@ describe("prs", () => {
   });
 
   describe("maintainers", () => {
-    describe("required", () => {
-      beforeEach(() => {
-        getIssueMock.mockReturnValue(<any>{
-          data: {
-            labels: ["awaiting review"],
-          },
-        });
-        listReviewsMock.mockReturnValue(<any>{
-          data: [
-            {
-              user: {
-                id: 123,
-              },
-              state: "approved",
-            },
-          ],
-        });
-        mockPayload.mockReturnValue(<any>{
-          pull_request: {
-            labels: ["awaiting review"],
-          },
-          issue: {
-            number: 123,
-          },
-          action: "submitted",
-          review: {
+    beforeEach(() => {
+      getIssueMock.mockReturnValue(<any>{
+        data: {
+          labels: ["awaiting review"],
+        },
+      });
+      listReviewsMock.mockReturnValue(<any>{
+        data: [
+          {
             user: {
               id: 123,
             },
             state: "approved",
           },
-        });
-        getCollaboratorPermissionLevelMock.mockReturnValue(<any>{
-          data: {
-            permission: "write",
-          },
-        });
+        ],
       });
+      mockPayload.mockReturnValue(<any>{
+        pull_request: {
+          labels: ["awaiting review"],
+        },
+        issue: {
+          number: 123,
+        },
+        action: "submitted",
+        review: {
+          user: {
+            id: 123,
+          },
+          state: "approved",
+        },
+      });
+      getCollaboratorPermissionLevelMock.mockReturnValue(<any>{
+        data: {
+          permission: "write",
+        },
+      });
+
+      describe("required", () => {});
 
       test("mark", async () => {
         mockConfig("reviewsMaintainersMark");
