@@ -1,6 +1,6 @@
 {
   "name": "triagecat",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "GitHub action to automate managing repositories with labels, milestones and projects.",
   "main": "lib/index.js",
   "type": "module",
@@ -9,7 +9,7 @@
     "format": "prettier --write \"**/*.ts\"",
     "format-check": "prettier --check \"**/*.ts\"",
     "test": "jest --verbose"
-    },
+  },
   "keywords": [],
   "author": "ooliver1 <oliverwilkes2006@icloud.com>",
   "license": "MIT",
