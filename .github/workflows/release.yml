@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - master
+      - dev
 
 name: release-please
 jobs:
@@ -12,3 +13,4 @@ jobs:
         with:
           release-type: node
           package-name: release-please-action
+          pre-release: ${{ github.ref_name != 'master' }}
