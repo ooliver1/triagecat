@@ -16,31 +16,14 @@ jobs:
         with:
           node-version: 16
 
-      - uses: pnpm/action-setup@v2.2.1
-        name: Install pnpm
-        id: pnpm-install
-        with:
-          version: 7
-          run_install: false
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+      - name: Yarn install cache
+        uses: c-hive/gha-yarn-cache@v1
 
       - name: Install dependencies
-        run: pnpm install
+        run: yarn install
 
       - name: Build
-        run: pnpm run build
+        run: yarn build
 
       - name: Push build to GitHub
         uses: EndBug/add-and-commit@v9
@@ -49,7 +32,7 @@ jobs:
           default_author: github_actions
 
       - name: Test project
-        run: pnpm run test
+        run: yarn test
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
