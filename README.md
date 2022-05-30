@@ -28,7 +28,7 @@ You most likely also need `settings/actions` `Workflow permissions` to be set to
 on:
   issues:
     types: [opened, closed, labeled, unlabeled, milestoned, demilestoned]
-  pull_request:
+  pull_request_target:
     types: [labeled, unlabeled, opened, closed, converted_to_draft, ready_for_review]
   pull_request_review:
     types: [submitted]

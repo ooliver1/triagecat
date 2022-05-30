@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 
-import pullRequestHandler from "../../src/handlers.d/pull-request-handler";
+import pullRequestTargetHandler from "../../src/handlers.d/pull-request-target-handler";
 import { mockPayload } from "../../__mocks__/@actions/github";
 
 const gh = github.getOctokit("_");
@@ -29,7 +29,7 @@ describe("Unit test drafts and non-draft labelling", () => {
       action: "converted_to_draft",
     });
     const config = { prs: { drafts: { markInProgress: true } } };
-    expect(pullRequestHandler(config)).rejects.toThrowError(
+    expect(pullRequestTargetHandler(config)).rejects.toThrowError(
       "Cannot mark drafts in progress without specifying `labels.inProgress`"
     );
   });
@@ -45,7 +45,7 @@ describe("Unit test drafts and non-draft labelling", () => {
       action: "ready_for_review",
     });
     const config = { prs: { drafts: { markAwaitingReview: true } } };
-    expect(pullRequestHandler(config)).rejects.toThrowError(
+    expect(pullRequestTargetHandler(config)).rejects.toThrowError(
       "Cannot mark non-drafts as awaiting review without specifying " +
         "`labels.markAwaitingReview`"
     );
@@ -70,7 +70,7 @@ describe("Unit test drafts and non-draft labelling", () => {
       prs: { drafts: { markInProgress: true } },
       labels: { inProgress: "in progress" },
     };
-    expect(pullRequestHandler(config)).rejects.toThrowError(
+    expect(pullRequestTargetHandler(config)).rejects.toThrowError(
       "Label name not found somehow"
     );
   });
@@ -95,7 +95,7 @@ describe("Unit test drafts and non-draft labelling", () => {
       labels: { inProgress: "in progress" },
     };
 
-    await pullRequestHandler(config);
+    await pullRequestTargetHandler(config);
     expect(setLabelsMock).toHaveBeenCalledTimes(1);
     expect(setLabelsMock).toHaveBeenCalledWith({
       owner: "ooliver1",

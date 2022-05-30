@@ -4,7 +4,7 @@ import { context } from "@actions/github";
 import { PullRequestEvent } from "@octokit/webhooks-types";
 import { modifyLabels } from "../utils";
 
-export default async function pullRequestHandler(config: ConfigFile) {
+export default async function pullRequestTargetHandler(config: ConfigFile) {
   const payload = context.payload as PullRequestEvent;
   const pr = payload.pull_request;
 

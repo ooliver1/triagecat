@@ -8,7 +8,7 @@ import ConfigFileTI from "./types/config.d-ti";
 import { createCheckers, Checker } from "ts-interface-checker";
 
 import {
-  pullRequestHandler,
+  pullRequestTargetHandler,
   pullRequestReviewHandler,
   // issuesHandler,
   // workflowDispatchHandler,
@@ -29,8 +29,8 @@ export default async function run() {
   }
 
   switch (context.eventName) {
-    case "pull_request":
-      await pullRequestHandler(config);
+    case "pull_request_target":
+      await pullRequestTargetHandler(config);
       break;
     case "pull_request_review":
       await pullRequestReviewHandler(config);

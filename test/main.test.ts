@@ -53,7 +53,7 @@ afterAll(() => jest.restoreAllMocks());
 describe("prs", () => {
   describe("drafts", () => {
     beforeEach(() => {
-      mockEventName.mockReturnValue("pull_request");
+      mockEventName.mockReturnValue("pull_request_target");
     });
 
     describe("in progress", () => {
