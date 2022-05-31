@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.1](https://github.com/ooliver1/triagecat/compare/v0.1.0...v0.1.1) (2022-05-31)
+
+
+### Bug Fixes
+
+* **main:** use no config if not found ([e4fb8fe](https://github.com/ooliver1/triagecat/commit/e4fb8fe58d8b70680d89274a2cc9cd00ddf291d5))
+
 ## [0.1.0](https://github.com/ooliver1/triagecat/compare/v0.0.0...v0.1.0) (2022-05-30)
 
 
