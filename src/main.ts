@@ -51,13 +51,11 @@ export default async function run() {
 
 async function getConfig(token: string) {
   const configFile = getInput("config") || ".github/triagecat.yml";
+  let config: ConfigFile = {};
   try {
-    const config: ConfigFile = load(
-      await fetchContent(getOctokit(token), configFile)
-    ) as any;
+    config = load(await fetchContent(getOctokit(token), configFile)) as any;
   } catch (e) {
     console.error(`Received ${e} while trying to fetch config at ${configFile}`);
-    const config: ConfigFile = {} as any;
   }
 
   ConfigFile.check(config);
