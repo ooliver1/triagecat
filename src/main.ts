@@ -57,7 +57,7 @@ async function getConfig(token: string) {
     ) as any;
   } catch (e) {
     console.error(`Received ${e} while trying to fetch config at ${configFile}`);
-    const config = {};
+    const config: ConfigFile = {} as any;
   }
 
   ConfigFile.check(config);
