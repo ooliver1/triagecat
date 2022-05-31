@@ -9,6 +9,7 @@ export async function modifyLabels(
 ) {
   const client = getOctokit(getInput("repo-token", { required: true }));
 
+  console.log(`Fetching labels for issue/PR ${context.issue.number}`)
   const issue = await client.rest.issues.get({
     owner: context.repo.owner,
     repo: context.repo.repo,
