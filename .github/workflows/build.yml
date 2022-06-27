@@ -26,6 +26,7 @@ jobs:
         run: yarn build
 
       - name: Push build to GitHub
+        if: github.event_name != 'pull_request'
         uses: EndBug/add-and-commit@v9
         with:
           message: "chore: build project"
