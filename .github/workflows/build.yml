@@ -27,6 +27,7 @@ jobs:
 
       - name: Push build to GitHub
         if: github.event_name != 'pull_request' && secrets.IS_DEPENDABOT != 'true'
+        continue-on-error: true
         uses: EndBug/add-and-commit@v9
         with:
           message: "chore: build project"
