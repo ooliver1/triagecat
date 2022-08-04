@@ -2,6 +2,7 @@ export default {
   preset: "ts-jest/presets/default-esm",
   transform: {
     "^.+\\.(t|j)sx?$": "ts-jest",
+    "^.+\\.(js|jsx)$": "babel-jest",
   },
   globals: {
     "ts-jest": {
