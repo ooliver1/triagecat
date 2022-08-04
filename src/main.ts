@@ -10,7 +10,7 @@ import { createCheckers, Checker } from "ts-interface-checker";
 import {
   pullRequestTargetHandler,
   pullRequestReviewHandler,
-  // issuesHandler,
+  issuesHandler,
   // workflowDispatchHandler,
   // issueCommentHandler,
 } from "./handlers";
@@ -35,9 +35,9 @@ export default async function run() {
     case "pull_request_review":
       await pullRequestReviewHandler(config);
       break;
-    // case "issues":
-    //   await issuesHandler(config);
-    //   break;
+    case "issues":
+      await issuesHandler(config);
+      break;
     // case "workflow_dispatch":
     //   await workflowDispatchHandler(config);
     //   break;
