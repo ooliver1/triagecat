@@ -12,7 +12,7 @@ export async function modifyLabels(
     remove = [];
   }
 
-  const client = getOctokit(getInput("repo-token", { required: true }));
+  const client = getClient();
 
   console.log(`Fetching labels for issue/PR ${context.issue.number}`);
   const issue = await client.rest.issues.get({
@@ -62,4 +62,8 @@ export async function modifyLabels(
     labels: labels,
   });
   console.log("Added", add, "to #", context.issue.number, "and removed", remove);
+}
+
+export function getClient() {
+  return getOctokit(getInput("repo-token", { required: true }));
 }
