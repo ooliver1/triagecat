@@ -60,17 +60,17 @@ async function handleApprove(config: ConfigFile, payload: PullRequestReviewEvent
         if (maintainers.length >= config.prs.reviews.maintainers.required) {
           if (config.prs.reviews.required) {
             if (approvals.length >= config.prs.reviews.required) {
-              await modifyLabels(mergeLabel, remove);
+              await modifyLabels([mergeLabel], [remove]);
             }
           } else {
-            await modifyLabels(mergeLabel, remove);
+            await modifyLabels([mergeLabel], [remove]);
           }
         }
       } else if (
         config.prs.reviews.required &&
         approvals.length >= config.prs.reviews.required
       ) {
-        await modifyLabels(mergeLabel, remove);
+        await modifyLabels([mergeLabel], [remove]);
       }
     } else {
       throw new Error(
