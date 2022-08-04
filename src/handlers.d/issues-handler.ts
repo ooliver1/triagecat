@@ -8,7 +8,7 @@ import {
   IssuesDemilestonedEvent,
   IssuesUnlabeledEvent,
 } from "@octokit/webhooks-types";
-import { modifyLabels } from "../utils";
+import { modifyLabels, getClient } from "../utils";
 
 export default async function issuesHandler(config: ConfigFile) {
   const payload = context.payload as IssuesEvent;
@@ -30,7 +30,25 @@ async function handleMilestone(config: ConfigFile, payload: IssuesMilestonedEven
   );
 
   if (milestoneConfig) {
-    await modifyLabels([milestoneConfig.label]);
+    const client = getClient();
+
+    const milestone = (
+      await client.rest.issues.listMilestones({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+      })
+    ).data.find((m) => m.title === payload.milestone.title);
+
+    if (milestone) {
+      await client.rest.issues.update({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        issue_number: payload.issue.number,
+        milestone: milestone.id,
+      });
+    } else {
+      throw new Error("Milestone not found");
+    }
   }
 }
 
@@ -40,7 +58,14 @@ async function handleDemilestone(config: ConfigFile, payload: IssuesDemilestoned
   );
 
   if (milestoneConfig) {
-    await modifyLabels([], [milestoneConfig.label]);
+    const client = getClient();
+
+    await client.rest.issues.update({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      issue_number: payload.issue.number,
+      milestone: null,
+    });
   }
 }
 
