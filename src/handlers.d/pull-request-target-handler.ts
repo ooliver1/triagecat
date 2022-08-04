@@ -22,7 +22,7 @@ async function draftHandler(config: ConfigFile) {
   if (config.prs?.drafts?.markInProgress) {
     if (config.labels?.inProgress) {
       const remove = config.labels.awaitingReview;
-      await modifyLabels(config.labels.inProgress, remove);
+      await modifyLabels([config.labels.inProgress], [remove]);
     } else {
       throw new Error(
         "Cannot mark drafts in progress without specifying `labels.inProgress`"
@@ -35,7 +35,7 @@ async function readyForReviewHandler(config: ConfigFile) {
   if (config.prs?.drafts?.markAwaitingReview) {
     if (config.labels?.awaitingReview) {
       const remove = config.labels.inProgress;
-      await modifyLabels(config.labels.awaitingReview, remove);
+      await modifyLabels([config.labels.awaitingReview], [remove]);
     } else {
       throw new Error(
         "Cannot mark non-drafts as awaiting review without specifying " +
