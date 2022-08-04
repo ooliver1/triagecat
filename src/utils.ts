@@ -4,12 +4,17 @@ import { context, getOctokit } from "@actions/github";
 import { getInput } from "@actions/core";
 
 export async function modifyLabels(
-  add: string,
-  remove: string | undefined = undefined
+  add: (string | undefined)[],
+  remove: (string | undefined)[] | undefined = undefined
 ) {
+  if (remove == undefined) {
+    // Prevent the default from being modified.
+    remove = [];
+  }
+
   const client = getOctokit(getInput("repo-token", { required: true }));
 
-  console.log(`Fetching labels for issue/PR ${context.issue.number}`)
+  console.log(`Fetching labels for issue/PR ${context.issue.number}`);
   const issue = await client.rest.issues.get({
     owner: context.repo.owner,
     repo: context.repo.repo,
@@ -26,17 +31,27 @@ export async function modifyLabels(
   );
 
   // incase somehow this happens, avoid duplicates
-  const index = labels.indexOf(add);
-  if (index !== -1) {
-    labels.splice(index, 1);
+  for (const label of add) {
+    if (label) {
+      const index = labels.indexOf(label);
+      if (index !== -1) {
+        labels.splice(index, 1);
+      }
+    }
   }
 
-  labels.push(add);
+  add.forEach((label) => {
+    if (label !== undefined) {
+      labels.push(label);
+    }
+  });
 
-  if (remove) {
-    const index = labels.indexOf(remove);
-    if (index !== -1) {
-      labels.splice(index, 1);
+  for (const label of remove) {
+    if (label) {
+      const index = labels.indexOf(label);
+      if (index !== -1) {
+        labels.splice(index, 1);
+      }
     }
   }
 
