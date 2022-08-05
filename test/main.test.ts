@@ -19,6 +19,8 @@ const getCollaboratorPermissionLevelMock = jest.spyOn(
   gh.rest.repos,
   "getCollaboratorPermissionLevel"
 );
+const listMilestonesMock = jest.spyOn(gh.rest.issues, "listMilestones");
+const updateIssueMock = jest.spyOn(gh.rest.issues, "update");
 
 const configs: Record<string, string> = {
   draftsMark: fs.readFileSync("test/configs/prs/drafts/mark.yml"),
@@ -32,6 +34,7 @@ const configs: Record<string, string> = {
   permissionsDoNotMark: fs.readFileSync(
     "test/configs/prs/reviews/maintainers/permissions/do-not-mark.yml"
   ),
+  milestonesMark: fs.readFileSync("test/configs/milestones/mark.yml"),
 };
 
 const mockInput: Record<string, string> = {
@@ -299,6 +302,40 @@ describe("push", () => {
 
   test("rejects event", async () => {
     expect(run()).rejects.toThrowError("Unsupported event: push");
+  });
+});
+
+describe("milestones", () => {
+  beforeEach(() => {
+    mockEventName.mockReturnValue("issues");
+  });
+
+  describe("label", () => {
+    test("milestone it", async () => {
+      mockConfig("milestonesMark");
+
+      mockPayload.mockReturnValue({
+        issue: {
+          number: 123,
+          labels: [{ name: "2.0" }],
+        },
+        label: { name: "2.0" },
+        action: "labeled",
+      });
+      listMilestonesMock.mockReturnValue(<any>{
+        data: [{ title: "2.0 release", id: 1 }],
+      });
+
+      await run();
+
+      expect(updateIssueMock).toHaveBeenCalledTimes(1);
+      expect(updateIssueMock).toHaveBeenCalledWith({
+        owner: "ooliver1",
+        repo: "h",
+        issue_number: 123,
+        milestone: 1,
+      });
+    });
   });
 });
 
