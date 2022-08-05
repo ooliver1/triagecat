@@ -30,31 +30,55 @@ async function handleMilestone(config: ConfigFile, payload: IssuesMilestonedEven
   );
 
   if (milestoneConfig) {
-    const client = getClient();
-
-    const milestone = (
-      await client.rest.issues.listMilestones({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-      })
-    ).data.find((m) => m.title === payload.milestone.title);
-
-    if (milestone) {
-      await client.rest.issues.update({
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        issue_number: payload.issue.number,
-        milestone: milestone.id,
-      });
-    } else {
-      throw new Error("Milestone not found");
-    }
+    await modifyLabels([milestoneConfig.label], []);
   }
 }
 
 async function handleDemilestone(config: ConfigFile, payload: IssuesDemilestonedEvent) {
   const milestoneConfig = config.milestones?.find(
     (m) => m.milestone === payload.milestone.title
+  );
+
+  if (milestoneConfig) {
+    await modifyLabels([], [milestoneConfig.label]);
+  }
+}
+
+async function handleLabeled(config: ConfigFile, payload: IssuesLabeledEvent) {
+  // Handle milestone addition.
+  const milestoneConfig = config.milestones?.find(
+    (m) => m.label === payload.label?.name
+  );
+
+  if (!milestoneConfig) {
+    return;
+  }
+
+  const client = getClient();
+
+  const response = await client.rest.issues.listMilestones({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+  });
+
+  const milestone = response.data.find((m) => m.title === milestoneConfig.milestone);
+
+  if (milestone) {
+    await client.rest.issues.update({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      issue_number: payload.issue.number,
+      milestone: milestone.id,
+    });
+  } else {
+    throw new Error("Milestone not found");
+  }
+}
+
+async function handleUnlabeled(config: ConfigFile, payload: IssuesUnlabeledEvent) {
+  // Handle milestone removal.
+  const milestoneConfig = config.milestones?.find(
+    (m) => m.label === payload.label?.name
   );
 
   if (milestoneConfig) {
@@ -66,27 +90,5 @@ async function handleDemilestone(config: ConfigFile, payload: IssuesDemilestoned
       issue_number: payload.issue.number,
       milestone: null,
     });
-  }
-}
-
-async function handleLabeled(config: ConfigFile, payload: IssuesLabeledEvent) {
-  // Handle milestone addition.
-  const milestoneConfig = config.milestones?.find(
-    (m) => m.label === payload.label?.name
-  );
-
-  if (milestoneConfig) {
-    await modifyLabels([milestoneConfig.label]);
-  }
-}
-
-async function handleUnlabeled(config: ConfigFile, payload: IssuesUnlabeledEvent) {
-  // Handle milestone removal.
-  const milestoneConfig = config.milestones?.find(
-    (m) => m.label === payload.label?.name
-  );
-
-  if (milestoneConfig) {
-    await modifyLabels([], [milestoneConfig.label]);
   }
 }
