@@ -34,7 +34,7 @@ const configs: Record<string, string> = {
   permissionsDoNotMark: fs.readFileSync(
     "test/configs/prs/reviews/maintainers/permissions/do-not-mark.yml"
   ),
-  milestonesMark: fs.readFileSync("test/configs/milestones/mark.yml"),
+  milestones: fs.readFileSync("test/configs/milestones/mark.yml"),
 };
 
 const mockInput: Record<string, string> = {
@@ -312,7 +312,7 @@ describe("milestones", () => {
 
   describe("label", () => {
     test("milestone it", async () => {
-      mockConfig("milestonesMark");
+      mockConfig("milestones");
 
       mockPayload.mockReturnValue({
         issue: {
@@ -335,6 +335,178 @@ describe("milestones", () => {
         issue_number: 123,
         milestone: 1,
       });
+    });
+
+    test("do not milestone", async () => {
+      await run();
+
+      expect(updateIssueMock).toHaveBeenCalledTimes(0);
+    });
+
+    test("demilestone it", async () => {
+      mockConfig("milestones");
+
+      mockPayload.mockReturnValue({
+        issue: {
+          number: 123,
+          labels: [],
+        },
+        label: { name: "2.0" },
+        action: "unlabeled",
+      });
+
+      await run();
+
+      expect(updateIssueMock).toHaveBeenCalledTimes(1);
+      expect(updateIssueMock).toHaveBeenCalledWith({
+        owner: "ooliver1",
+        repo: "h",
+        issue_number: 123,
+        milestone: null,
+      });
+    });
+
+    test("error not found", async () => {
+      mockConfig("milestones");
+
+      mockPayload.mockReturnValue({
+        issue: {
+          number: 123,
+          labels: [{ name: "2.0" }],
+        },
+        label: { name: "2.0" },
+        action: "labeled",
+      });
+      listMilestonesMock.mockReturnValue(<any>{
+        data: [{ title: "random milestone name", id: 1 }],
+      });
+
+      expect(run()).rejects.toThrowError("Milestone not found");
+    });
+
+    test("expect no demilestone", async () => {
+      mockPayload.mockReturnValue({
+        issue: {
+          number: 123,
+          labels: [],
+        },
+        label: { name: "2.0" },
+        action: "unlabeled",
+      });
+
+      await run();
+
+      expect(updateIssueMock).toHaveBeenCalledTimes(0);
+    });
+
+    test("does not error on no label", async () => {
+      mockPayload.mockReturnValue({
+        issue: {
+          number: 123,
+          labels: [],
+        },
+        action: "labeled",
+      });
+
+      await run();
+
+      expect(updateIssueMock).toHaveBeenCalledTimes(0);
+    });
+
+    test("does not error on no unlabel", async () => {
+      mockPayload.mockReturnValue({
+        issue: {
+          number: 123,
+          labels: [],
+        },
+        action: "unlabeled",
+      });
+
+      await run();
+
+      expect(updateIssueMock).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe("milestone", () => {
+    test("label it", async () => {
+      mockConfig("milestones");
+
+      mockPayload.mockReturnValue({
+        issue: { number: 123 },
+        milestone: { title: "2.0 release" },
+        action: "milestoned",
+      });
+      getIssueMock.mockReturnValue(<any>{
+        data: {
+          labels: [],
+        },
+      });
+
+      await run();
+
+      expect(setLabelsMock).toHaveBeenCalledTimes(1);
+      expect(setLabelsMock).toHaveBeenCalledWith({
+        owner: "ooliver1",
+        repo: "h",
+        issue_number: 123,
+        labels: ["2.0"],
+      });
+    });
+
+    test("unlabel it", async () => {
+      mockConfig("milestones");
+
+      mockPayload.mockReturnValue({
+        issue: { number: 123 },
+        milestone: { title: "2.0 release" },
+        action: "demilestoned",
+      });
+      getIssueMock.mockReturnValue(<any>{
+        data: {
+          labels: ["2.0"],
+        },
+      });
+
+      await run();
+
+      expect(setLabelsMock).toHaveBeenCalledTimes(1);
+      expect(setLabelsMock).toHaveBeenCalledWith({
+        owner: "ooliver1",
+        repo: "h",
+        issue_number: 123,
+        labels: [],
+      });
+    });
+
+    test("expect no label", async () => {
+      mockPayload.mockReturnValue({
+        issue: {
+          number: 123,
+          labels: [],
+        },
+        milestone: { title: "2.0 release" },
+        action: "milestoned",
+      });
+
+      await run();
+
+      expect(setLabelsMock).toHaveBeenCalledTimes(0);
+    });
+
+    test("expect no unlabel", async () => {
+      mockPayload.mockReturnValue({
+        issue: {
+          number: 123,
+          labels: [],
+        },
+        milestone: { title: "2.0 release" },
+        action: "demilestoned",
+      });
+
+      await run();
+
+      expect(setLabelsMock).toHaveBeenCalledTimes(0);
     });
   });
 });
