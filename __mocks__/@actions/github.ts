@@ -22,6 +22,8 @@ const mockApi = {
     issues: {
       setLabels: jest.fn(),
       get: jest.fn(),
+      update: jest.fn(),
+      listMilestones: jest.fn(),
     },
     repos: {
       getContent: jest.fn((..._) => {
