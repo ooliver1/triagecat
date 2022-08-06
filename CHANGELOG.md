@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0](https://github.com/ooliver1/triagecat/compare/v0.1.1...v0.2.0) (2022-08-06)
+
+
+### Features
+
+* support milestone to label sync ([#66](https://github.com/ooliver1/triagecat/issues/66)) ([66f6302](https://github.com/ooliver1/triagecat/commit/66f630255d31d9f6db604ef4d6fcc2f0765df488))
+* **utils:** add getClient shortcut ([bb050f1](https://github.com/ooliver1/triagecat/commit/bb050f1a447cc0655b919fa03e2e24df8973e2a7))
+
 ### [0.1.1](https://github.com/ooliver1/triagecat/compare/v0.1.0...v0.1.1) (2022-05-31)
 
 
