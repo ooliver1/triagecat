@@ -1,6 +1,6 @@
 {
   "name": "triagecat",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "GitHub action to automate managing repositories with labels, milestones and projects.",
   "main": "lib/index.js",
   "type": "module",
